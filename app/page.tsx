@@ -7,6 +7,14 @@ import Image from "next/image"
 import { motion, useScroll, useTransform } from "framer-motion"
 
 export default function Portfolio() {
+  const [showAllSkills, setShowAllSkills] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [showCerts, setShowCerts] = useState(false);
+  const [showWork, setShowWork] = useState(false);
+
+  // Helper to detect mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
+
   const [activeSection, setActiveSection] = useState("home")
   const [isLoading, setIsLoading] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -65,6 +73,9 @@ export default function Portfolio() {
     }, 5000)
   }
 
+  // Only show 4 skills on mobile unless expanded
+  const visibleSkills = isMobile && !showAllSkills ? skills.slice(0, 4) : skills;
+
   const skills = [
     { name: "React", icon: "⚛️", color: "#61DAFB", level: 90 },
     { name: "Next.js", icon: "▲", color: "#000000", level: 85 },
@@ -79,6 +90,9 @@ export default function Portfolio() {
     { name: "OpenCV", icon: "👁️", color: "#5C3EE8", level: 80 },
     { name: "Excel", icon: "📊", color: "#217346", level: 92 },
   ]
+
+  // Only show 4 projects on mobile unless expanded
+  const visibleProjects = isMobile && !showAllProjects ? projects.slice(0, 4) : projects;
 
   const projects = [
     {
@@ -153,6 +167,9 @@ export default function Portfolio() {
     },
   ]
 
+  // Only show work experience if expanded on mobile
+  const visibleWork = isMobile && !showWork ? workExperience.slice(0, 2) : workExperience;
+
   const workExperience = [
     {
       title: "Security & Surveillance",
@@ -177,6 +194,9 @@ export default function Portfolio() {
       icon: "/icons/web-icon.png",
     },
   ]
+
+  // Only show certifications if expanded on mobile
+  const visibleCerts = isMobile && !showCerts ? certifications.slice(0, 2) : certifications;
 
   const certifications = [
     {
