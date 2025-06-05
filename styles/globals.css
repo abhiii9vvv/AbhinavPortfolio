@@ -24,7 +24,47 @@ img, video {
   * {
     transition: none !important;
   }
+  /* Force vertical stacking for flex layouts */
+  .flex, .items-center, .justify-center {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+  .gap-12 {
+    gap: 1.25rem !important;
+  }
+  .h-screen {
+    min-height: 70vh !important;
+    height: auto !important;
+  }
+  .max-w-xl {
+    max-width: 100vw !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+  section {
+    padding: 1.25rem 0.5rem !important;
+    margin-bottom: 1.5rem !important;
+    min-height: unset !important;
+    border-radius: 12px !important;
+  }
+  button, .button, input, textarea {
+    font-size: 1.1rem;
+    min-height: 48px;
+    min-width: 48px;
+    border-radius: 8px;
+  }
+  .card, .glass {
+    padding: 1rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+  /* Hide desktop-only UI */
+  .md\:flex, .lg\:flex, .xl\:flex {
+    display: none !important;
+  }
 }
+
 
 /* Responsive font sizes and padding */
 @media (max-width: 600px) {

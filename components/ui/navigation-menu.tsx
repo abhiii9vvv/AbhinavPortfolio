@@ -8,19 +8,89 @@ import { cn } from "@/lib/utils"
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>
->(({ className, children, ...props }, ref) => (
-  <NavigationMenuPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative z-10 flex max-w-max flex-1 items-center justify-center",
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <NavigationMenuViewport />
-  </NavigationMenuPrimitive.Root>
-))
+>(({ className, children, ...props }, ref) => {
+  const [open, setOpen] = React.useState(false);
+  // Placeholder links for demo; replace with your actual links or children
+  const navLinks = [
+    { href: "#home", label: "Home" },
+    { href: "#about", label: "About" },
+    { href: "#projects", label: "Projects" },
+    { href: "#contact", label: "Contact" },
+  ];
+
+  return (
+    <nav className={cn("relative z-20 w-full", className)} {...props} ref={ref}>
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center justify-center gap-6 w-full">
+        {navLinks.map(link => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="px-4 py-2 rounded-md text-base font-medium hover:bg-accent focus:bg-accent focus:outline-none transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+      {/* Hamburger for Mobile */}
+      <div className="flex md:hidden items-center justify-between w-full px-2 py-2">
+        <span className="font-bold text-lg">Menu</span>
+        <button
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+          onClick={() => setOpen(o => !o)}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-menu">
+            {open ? (
+              <>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </>
+            ) : (
+              <>
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </>
+            )}
+          </svg>
+        </button>
+      </div>
+      {/* Mobile Drawer */}
+      <div
+        id="mobile-menu"
+        className={`md:hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-40 transition-all duration-300 ${open ? 'block' : 'hidden'}`}
+        aria-hidden={!open}
+      >
+        <div className="flex flex-col items-center justify-center h-full gap-8">
+          {navLinks.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-2xl text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:bg-purple-700 focus:outline-none w-3/4 text-center transition-colors"
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+          <button
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          </button>
+        </div>
+      </div>
+      {/* Keep original viewport for desktop */}
+      <div className="hidden md:block">
+        <NavigationMenuViewport />
+      </div>
+    </nav>
+  );
+});
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName
 
 const NavigationMenuList = React.forwardRef<
